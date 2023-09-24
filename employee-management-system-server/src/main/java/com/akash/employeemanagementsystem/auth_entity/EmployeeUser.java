@@ -1,10 +1,8 @@
 package com.akash.employeemanagementsystem.auth_entity;
 
+import com.akash.employeemanagementsystem.entity.Employee;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,25 +17,47 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "employee_user_table")
 public class EmployeeUser implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID employee_id;
+    @Column(name = "emp_id",columnDefinition = "varchar(36)")
+    private String employeeId;
 
-    @Column(name = "email",unique = true,nullable = false)
+    @Column(name = "email",columnDefinition = "unique not null varchar(20)")
     private String email;
 
-    @Column(name = "password",nullable = false)
+    @Column(name = "password",columnDefinition = "not null varchar(60)")
     private String userPassword;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "role")
     private Role role;
+
+
+    @OneToOne(mappedBy = "employeeUser",cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private Employee employee;
+
+    @OneToOne(mappedBy = "employeeUser",cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private TokenEntity token;
+
+    @Override
+    public String toString() {
+        return "EmployeeUser{" +
+                "employeeId='" + employeeId + '\'' +
+                ", email='" + email + '\'' +
+                ", userPassword='" + userPassword + '\'' +
+                ", role=" + role +
+                '}';
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return role.getAllAuthorities();
     }
 
     @Override

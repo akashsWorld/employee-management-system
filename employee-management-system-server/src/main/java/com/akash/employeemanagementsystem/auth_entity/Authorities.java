@@ -13,7 +13,8 @@ public enum Authorities {
     MANAGER_READ("manager:read"),
     MANAGER_CREATE("manager:create"),
     MANAGER_UPDATE("manager:update"),
-    MANAGER_DELETE("manager:read");
+    MANAGER_DELETE("manager:read"),
+    ADMIN_CREATOR("admin:creator");
 
     @Getter
     private final String permission;

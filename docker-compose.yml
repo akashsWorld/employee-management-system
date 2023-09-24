@@ -5,9 +5,10 @@ services:
   db:
     image: mysql
     restart: always
+    command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: example
-      MYSQL_DATABASE: demo-test
+      MYSQL_DATABASE: demo_test
       MYSQL_USER: akash
       MYSQL_PASSWORD: password
     ports:
