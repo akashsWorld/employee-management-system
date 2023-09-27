@@ -1,0 +1,25 @@
+Employee:->
+
+    localhost:8080/api/v1/employee/changeEmployeeBranch
+
+    localhost:8080/api/v1/employee/deleteEmployee/{empId}
+
+    localhost:8080/api/v1/employee/joinEmployeeToBranch
+
+    localhost:8080/api/v1/employee/saveEmployee
+
+Branch:->
+
+    localhost:8080/api/v1/branch/addBranch
+
+    localhost:8080/api/v1/branch/addBranchManager
+
+    localhost:8080/api/v1/branch/changeBranchManager
+
+    localhost:8080/api/v1/branch/getAllBranches
+
+    localhost:8080/api/v1/branch/getBranchById/{branchId}
+
+    localhost:8080/api/v1/branch/deleteAllBranches
+
+    localhost:8080/api/v1/branch/deleteBranchById/{branchId}

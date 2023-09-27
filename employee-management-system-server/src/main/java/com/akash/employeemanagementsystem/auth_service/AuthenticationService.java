@@ -3,6 +3,7 @@ package com.akash.employeemanagementsystem.auth_service;
 import com.akash.employeemanagementsystem.auth_entity.*;
 import com.akash.employeemanagementsystem.repository.EmployeeUserRepository;
 import com.akash.employeemanagementsystem.repository.TokenRepository;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,7 +34,7 @@ public class AuthenticationService {
         EmployeeUser employeeUser = EmployeeUser.builder()
                 .userPassword(passwordEncoder.encode(registerRequest.getPassword()))
                 .email(registerRequest.getEmail())
-                .role(Role.ADMIN)
+                .role(Role.USER)
                 .build();
         employeeUser = employeeUserRepository.save(employeeUser);
 
@@ -51,12 +52,18 @@ public class AuthenticationService {
     }
 
     public AuthenticateResponse authenticateUser(AuthenticateRequest registerRequest) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        registerRequest.getEmail(),
-                        registerRequest.getPassword()
-                )
-        );
+
+        try{
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            registerRequest.getEmail(),
+                            registerRequest.getPassword()
+                    )
+            );
+        }catch (ExpiredJwtException expiredJwtException){
+            System.out.println(expiredJwtException.toString());
+        }
+
 
         EmployeeUser employeeUser =
                 employeeUserRepository.findEmployeeUserByEmail(registerRequest.getEmail()).orElseThrow(RuntimeException::new);
@@ -80,8 +87,6 @@ public class AuthenticationService {
                     .token(tokenRepository.save(tokenEntity).getToken())
                     .build();
         };
-
-
         return AuthenticateResponse.builder().token(tokenEntity.getToken()).build();
     }
 }

@@ -5,13 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.util.*;
 
 // TODO: Define all the relations between the databases
 
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -45,4 +44,38 @@ public class Employee {
     @JsonIgnore
     private EmployeeUser employeeUser;
 
+    @OneToOne(mappedBy = "employee")
+    private Branch branch;
+
+
+    @OneToMany(mappedBy = "employee")
+    private Set<Employee> employees =new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "emp_id",name = "super_id")
+    @JsonIgnore
+    private Employee employee;
+
+
+    @OneToOne
+    @JsonIgnore
+    @JoinColumn(referencedColumnName = "branch_id",name = "branch_id")
+    private Branch branchName;
+
+
+    @OneToMany(mappedBy = "employee")
+    private Set<WorksWith> clientSet = new HashSet<>();
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "employeeId='" + employeeId + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", birthDate=" + birthDate +
+                ", gender=" + gender +
+                ", salary=" + salary +
+                ", branch=" + branch +
+                '}';
+    }
 }

@@ -1,7 +1,6 @@
 package com.akash.employeemanagementsystem.security_config;
 
 import com.akash.employeemanagementsystem.auth_config.JWTAuthenticationFilter;
-import com.akash.employeemanagementsystem.auth_service.JWTService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +30,11 @@ public class SecurityConfiguration {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(http -> http
-                        .requestMatchers("/api/v1/authenticate/**")
+                        .requestMatchers("/api/v1/authenticate/**",
+                                "/api/v1/demo/**",
+                                "/api/v1/employee/**",
+                                "/api/v1/branch/**",
+                                "")
                         .permitAll()
                         .anyRequest()
                         .authenticated())

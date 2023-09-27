@@ -21,6 +21,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public enum Role {
 
+    USER(
+            Set.of(
+
+            )
+    ),
+
     SYSTEM_ADMIN(
             Set.of(
                     ADMIN_CREATOR,
